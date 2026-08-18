@@ -135,6 +135,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 // but we keep this as a safety net
                 eprintln!("Error: TIME argument is required for countdown mode");
                 eprintln!("Usage: ascii-timer [OPTIONS] <TIME>");
+                let _ = execute!(std::io::stdout(), LeaveAlternateScreen, Show);
                 std::process::exit(1);
             }
         };
