@@ -7,7 +7,7 @@ A terminal-based countdown timer and stopwatch that displays time in large ASCII
 - **Countdown Mode**: Count down from a specified time duration
 - **Stopwatch Mode** (`-s`): Count up from zero
 - **Verbose Mode** (`-v`): Display time with millisecond precision
-- **Large ASCII Art Display**: Renders time using FIGlet fonts for maximum visibility
+- **ASCII Art Display**: Renders time using Toilet fonts
 - **Keyboard Controls**: Press `Enter` to exit at any time
 - **Signal Handling**: Gracefully handles Ctrl+C and ignores Ctrl+Z
 - **Terminal Cleanup**: Automatically restores terminal state on exit
@@ -73,7 +73,7 @@ ascii-timer -s
 
 **Stopwatch with milliseconds:**
 ```bash
-# no suppor for -sv
+# or -sv
 ascii-timer -s -v
 ```
 
