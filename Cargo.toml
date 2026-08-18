@@ -8,5 +8,7 @@ figlet-rs = "1.0.0"
 humantime = "2.1"
 crossterm = "0.28"
 ctrlc = "3.4"
-libc = "0.2.186"
 clap = { version = "4", features = ["derive"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2.186"
