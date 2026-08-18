@@ -1,0 +1,24 @@
+- name: Prepare binary
+        shell: bash
+        run: |
+          BIN_NAME="ascii-timer-${{ matrix.target }}${{ matrix.suffix }}"
+          cp target/${{ matrix.target }}/release/ascii-timer${{ matrix.suffix }} "$BIN_NAME"
+
+      - name: Generate checksums (Python)
+        shell: python
+        run: |
+          import hashlib
+          import glob
+
+          with open('CHECKSUMS.txt', 'w') as out:
+              for f in sorted(glob.glob('ascii-timer-*')):
+                  with open(f, 'rb') as fh:
+                      digest = hashlib.sha256(fh.read()).hexdigest()
+                      out.write(f'{digest}  {f}\n')
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            ascii-timer-*
+            CHECKSUMS.txt
