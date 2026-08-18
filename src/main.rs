@@ -10,6 +10,7 @@ use clap::Parser;
 // Use figlet for ASCII art text rendering
 use figlet_rs::Toilet;
 // Use libc for Unix signal handling
+#[cfg(unix)]
 use libc::signal;
 use std::io::{Write, stdout};
 use std::str::FromStr;
@@ -58,6 +59,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     })?;
 
     // Ignore SIGTSTP (Ctrl+Z)
+    #[cfg(unix)]
     unsafe {
         signal(libc::SIGTSTP, libc::SIG_IGN);
     }
