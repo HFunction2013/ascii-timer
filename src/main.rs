@@ -5,16 +5,34 @@ use crossterm::{
     execute,
     terminal::{EnterAlternateScreen, LeaveAlternateScreen},
 };
+// Use clap for professional argument parsing
+use clap::Parser;
 // Use figlet for ASCII art text rendering
 use figlet_rs::Toilet;
 // Use libc for Unix signal handling
 use libc::signal;
-use std::env;
 use std::io::{Write, stdout};
 use std::str::FromStr;
 use std::sync::Arc;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::{Duration, Instant};
+
+/// A terminal-based timer with ASCII art display
+#[derive(Parser)]
+#[command(name = "ascii-timer")]
+#[command(about = "Display a countdown or stopwatch timer with ASCII art numbers")]
+struct Cli {
+    /// Enable verbose mode showing milliseconds
+    #[arg(short = 'v', long = "verbose")]
+    verbose: bool,
+
+    /// Run as stopwatch counting up from zero instead of countdown
+    #[arg(short = 's', long = "stopwatch")]
+    stopwatch: bool,
+
+    /// Time duration for countdown (e.g., "5m", "30s", "2h", "500ms", or plain number for milliseconds)
+    time: Option<String>,
+}
 
 // Guard struct to restore terminal state on exit
 struct AtExit;
@@ -27,23 +45,10 @@ impl Drop for AtExit {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let _guard = AtExit;
 
-    // Parse command line arguments
-    let args: Vec<String> = env::args().collect();
-    let mut verbose = false;
-    let mut stopwatch = false;
-    let mut time_arg = None;
-
-    for arg in args {
-        match arg.as_str() {
-            "-v" | "--verbose" => verbose = true, // Verbose mode with milliseconds
-            "-s" | "--stopwatch" => stopwatch = true, // Stopwatch mode
-            _ => {
-                if time_arg.is_none() {
-                    time_arg = Some(arg.clone()); // Time argument
-                }
-            }
-        }
-    }
+    // Parse command line arguments using clap
+    let cli = Cli::parse();
+    let verbose = cli.verbose;
+    let stopwatch = cli.stopwatch;
 
     // Setup Ctrl+C handler
     let running = Arc::new(AtomicBool::new(true));
@@ -121,13 +126,17 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     } else {
         // Countdown mode: count down from specified time
-        let time = match time_arg {
-            Some(arg) => arg,
+        let time = match cli.time {
+            Some(t) => t,
             None => {
-                eprintln!("Usage: ascii-timer [-v] [-s] <TIME>");
+                // clap will show help automatically for missing required args,
+                // but we keep this as a safety net
+                eprintln!("Error: TIME argument is required for countdown mode");
+                eprintln!("Usage: ascii-timer [OPTIONS] <TIME>");
                 std::process::exit(1);
             }
         };
+
         // If argument is a plain number, treat it as milliseconds
         let time = if time.parse::<i32>().is_ok() {
             format!("{time}ms")

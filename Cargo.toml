@@ -9,3 +9,4 @@ humantime = "2.1"
 crossterm = "0.28"
 ctrlc = "3.4"
 libc = "0.2.186"
+clap = { version = "4", features = ["derive"] }
