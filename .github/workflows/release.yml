@@ -49,13 +49,35 @@ jobs:
           BIN_NAME="terminal-timer-${{ matrix.target }}${{ matrix.suffix }}"
           cp target/${{ matrix.target }}/release/terminal-timer${{ matrix.suffix }} "$BIN_NAME"
 
-      - name: Generate checksums (Python)
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.target }}
+          path: terminal-timer-${{ matrix.target }}${{ matrix.suffix }}
+          retention-days: 1
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Download all binaries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: binary-*
+          merge-multiple: true
+          path: binaries/
+
+      - name: Generate unified CHECKSUMS.txt
         shell: python
         run: |
           import hashlib
           import glob
+          import os
 
-          with open('CHECKSUMS.txt', 'w') as out:
+          os.chdir('binaries')
+          
+          with open('../CHECKSUMS.txt', 'w') as out:
               for f in sorted(glob.glob('terminal-timer-*')):
                   with open(f, 'rb') as fh:
                       digest = hashlib.sha256(fh.read()).hexdigest()
@@ -65,5 +87,5 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            terminal-timer-*
+            binaries/*
             CHECKSUMS.txt
