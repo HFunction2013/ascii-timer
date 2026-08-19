@@ -65,7 +65,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     let mut stdout = stdout();
-    execute!(stdout, EnterAlternateScreen, Hide)?; // Switch to alternate screen
 
     // Load FIGlet font
     let font = Toilet::future().unwrap();
@@ -91,6 +90,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if stopwatch {
         // Stopwatch mode: count up from zero
         let start = Instant::now();
+        execute!(stdout, EnterAlternateScreen, Hide)?; // Switch to alternate screen
         while running.load(Ordering::SeqCst) {
             execute!(stdout, crossterm::cursor::MoveTo(0, 0))?;
             let elapsed = start.elapsed();
@@ -127,6 +127,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
         }
     } else {
+        execute!(stdout, EnterAlternateScreen, Hide)?; // Switch to alternate screen
         // Countdown mode: count down from specified time
         let time = match cli.time {
             Some(t) => t,
@@ -201,7 +202,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
-    // Restore terminal state
-    execute!(stdout, Show, LeaveAlternateScreen)?;
+    // _guard will drop.
     Ok(())
 }
