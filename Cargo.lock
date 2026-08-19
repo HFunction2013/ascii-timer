@@ -59,18 +59,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ascii-timer"
-version = "0.1.0"
-dependencies = [
- "clap",
- "crossterm",
- "ctrlc",
- "figlet-rs",
- "humantime",
- "libc",
-]
-
-[[package]]
 name = "bitflags"
 version = "2.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -468,6 +456,18 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
+]
+
+[[package]]
+name = "terminal-timer"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "crossterm",
+ "ctrlc",
+ "figlet-rs",
+ "humantime",
+ "libc",
 ]
 
 [[package]]

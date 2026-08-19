@@ -20,7 +20,7 @@ use std::time::{Duration, Instant};
 
 /// A terminal-based timer with ASCII art display
 #[derive(Parser)]
-#[command(name = "ascii-timer")]
+#[command(name = "terminal-timer")]
 #[command(about = "Display a countdown or stopwatch timer with ASCII art numbers")]
 struct Cli {
     /// Enable verbose mode showing milliseconds
@@ -134,8 +134,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 // clap will show help automatically for missing required args,
                 // but we keep this as a safety net
                 eprintln!("Error: TIME argument is required for countdown mode");
-                eprintln!("Usage: ascii-timer [OPTIONS] <TIME>");
                 let _ = execute!(std::io::stdout(), LeaveAlternateScreen, Show);
+                eprintln!("Usage: terminal-timer [OPTIONS] <TIME>");
                 std::process::exit(1);
             }
         };

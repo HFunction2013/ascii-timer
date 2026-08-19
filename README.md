@@ -1,6 +1,6 @@
-# Ascii Timer
+# Terminal Timer
 
-A terminal-based countdown timer and stopwatch that displays time in large ASCII art using FIGlet fonts. Built with Rust.
+A terminal-based countdown timer and stopwatch that displays time in ASCII art using Toilet future font. Built with Rust.
 
 ## Features
 
@@ -21,18 +21,18 @@ A terminal-based countdown timer and stopwatch that displays time in large ASCII
 ### Build from source
 
 ```bash
-# or `gh repo clone HFunction2013/ascii-timer`
-git clone https://github.com/HFunction2013/ascii-timer.git
-cd ascii-timer
+# or `gh repo clone HFunction2013/terminal-timer`
+git clone https://github.com/HFunction2013/terminal-timer.git
+cd terminal-timer
 cargo build --release
 ```
 
-The binary will be located at `target/release/ascii-timer`.
+The binary will be located at `target/release/terminal-timer`.
 
 ## Usage
 
 ```
-ascii-timer [OPTIONS] [TIME]
+terminal-timer [OPTIONS] [TIME]
 ```
 
 ### Options
@@ -58,28 +58,28 @@ In countdown mode, specify the duration using human-readable formats supported b
 
 **Countdown from 10 seconds:**
 ```bash
-ascii-timer 10s
+terminal-timer 10s
 ```
 
 **Countdown with milliseconds display:**
 ```bash
-ascii-timer -v 90s
+terminal-timer -v 90s
 ```
 
 **Stopwatch mode:**
 ```bash
-ascii-timer -s
+terminal-timer -s
 ```
 
 **Stopwatch with milliseconds:**
 ```bash
 # or -sv
-ascii-timer -s -v
+terminal-timer -s -v
 ```
 
 **Countdown from 5 minutes:**
 ```bash
-ascii-timer 5m
+terminal-timer 5m
 ```
 
 ## Controls
@@ -90,11 +90,12 @@ ascii-timer 5m
 
 ## Dependencies
 
-- https://crates.io/crates/crossterm — Terminal manipulation (alternate screen, cursor hiding)
-- https://crates.io/crates/figlet-rs — ASCII art font rendering via FIGlet
-- https://crates.io/crates/humantime — Human-readable duration parsing
-- https://crates.io/crates/libc — Unix signal handling (SIGTSTP)
-- https://crates.io/crates/ctrlc — Cross-platform Ctrl+C handler
+- https://crates.io/crates/crossterm = "0.28"  — Terminal manipulation (alternate screen, cursor hiding)
+- https://crates.io/crates/figlet-rs = "1.0.0" — ASCII art font rendering via FIGlet
+- https://crates.io/crates/humantime = "2.1"   — Human-readable duration parsing
+- https://crates.io/crates/libc = "0.2.186"    — Unix signal handling (SIGTSTP), Unix dependency only.
+- https://crates.io/crates/ctrlc = "3.4"       — Cross-platform Ctrl+C handler
+- https://crates.io/crates/clap = "4"          - Argument Parsing.
 
 ## Notes
 
